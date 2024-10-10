@@ -86,7 +86,7 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
         {
             try
             {
-                _logicalStationNumber = 0;
+                _logicalStationNumber = 1;
                 _heartbeatDeviceName = "D";
                 _heartbeatDeviceType = PlcDataType.WORD;
                 _heartbeatDbInfo = new PlcDbInfo(5500, 0);
