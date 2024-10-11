@@ -99,7 +99,7 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
 
                 _melsecPlc.PlcError += (s, e) => Disconnect();
                 LoadPlcSignalDictForSealer();
-                //Connect();
+                Connect();
             }
             catch (Exception ex)
             {
@@ -109,34 +109,20 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
         private void initPlcMapTest()
         {
             //5000
-            _lsPlc.Write($"%DX{0 * 16 + 0}", true);
-            _lsPlc.Write($"%DX{0 * 16 + 1}", false);
-            _lsPlc.Write($"%DX{0 * 16 + 2}", true);
-            _lsPlc.Write($"%DX{0 * 16 + 3}", false);
-            _lsPlc.Write($"%DX{0 * 16 + 15}", true);
-            //5001 - 5007
-            _lsPlc.Write($"%DW{1}", 10);
-            _lsPlc.Write($"%DW{2}", 20);
-            _lsPlc.Write($"%DW{3}", 30);
-            _lsPlc.Write($"%DW{4}", 40);
-            _lsPlc.Write($"%DW{5}", 50);
-            _lsPlc.Write($"%DW{6}", 60);
-            _lsPlc.Write($"%DW{7}", 70);
-            //5100
-            _lsPlc.Write($"%DX{100 * 16 + 0}", true);
-            var tmp = _lsPlc.Read($"%DX{100 * 16 + 0}");
-            _lsPlc.Write($"%DX{100 * 16 + 1}", true);
-             tmp = _lsPlc.Read($"%DX{100 * 16 + 1}");
-            _lsPlc.Write($"%DX{100 * 16 + 10}", true);
-             tmp = _lsPlc.Read($"%DX{100 * 16 + 10}");
-            //5101
-            //_lsPlc.Write($"%DD{101 * 0.5f}", 101.101);
-            //_lsPlc.Write($"%DD{103 * 0.5f}", 103.103);
-            //_lsPlc.Write($"%DD{105 * 0.5f}", 105.105);
-            //_lsPlc.Write($"%DD{107 * 0.5f}", 107.107);
-            //_lsPlc.Write($"%DD{109 * 0.5f}", 109.109);
-            //_lsPlc.Write($"%DD{111 * 0.5f}", 111.111);
-            _lsPlc.Write($"%DX{500 * 16 + 0}", true);
+            var bytes = BitConverter.GetBytes('A');
+            _lsPlc.Write($"%DX{5000 * 8 + 3}", true);
+            _lsPlc.Write(DeviceType.D, 5002, BitConverter.GetBytes(1111));
+            _lsPlc.Write(DeviceType.D, 5004, BitConverter.GetBytes(2222));
+            _lsPlc.Write(DeviceType.D, 5006, BitConverter.GetBytes(6565));
+            _lsPlc.Write(DeviceType.D, 5008, BitConverter.GetBytes(6664));
+            _lsPlc.Write(DeviceType.D, 5010, BitConverter.GetBytes(6565));
+            _lsPlc.Write(DeviceType.D, 5012, BitConverter.GetBytes(6565));
+            _lsPlc.Write(DeviceType.D, 5014, BitConverter.GetBytes(6565));
+            _lsPlc.Write(DeviceType.D, 5116, BitConverter.GetBytes(123.123f));
+            _lsPlc.Write(DeviceType.D, 5120, BitConverter.GetBytes(125.125f));
+            //_lsPlc.Write(DeviceType.D, (uint)0, bytes);
+            //var tmp = _lsPlc.Read(DeviceType.D, (uint)0, 4);
+            //_lsPlc.Write($"%DX{500 * 16 + 0}", true);
         }
 
         private void LoadPlcSignalDictForSealer()
@@ -160,7 +146,7 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
                 {
                     SignalDict = new ConcurrentDictionary<PlcSignalForLoadingBox, PlcDbInfo>()
                     {
-                        [PlcSignalForLoadingBox.CAR_TYPE | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5001, -1),
+                        [PlcSignalForLoadingBox.CAR_TYPE | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5002, -1),
                     }
                 },
                 // [2]
@@ -168,8 +154,8 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
                 {
                     SignalDict = new ConcurrentDictionary<PlcSignalForLoadingBox, PlcDbInfo>()
                     {
-                        [PlcSignalForLoadingBox.CAR_SEQ1 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5002, -1),
-                        [PlcSignalForLoadingBox.CAR_SEQ2 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5003, -1),
+                        [PlcSignalForLoadingBox.CAR_SEQ1 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5004, -1),
+                        [PlcSignalForLoadingBox.CAR_SEQ2 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5006, -1),
                     }
                 },
                 // [3]
@@ -195,22 +181,22 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
                 {
                     SignalDict = new ConcurrentDictionary<PlcSignalForLoadingBox, PlcDbInfo>()
                     {
-                        [PlcSignalForLoadingBox.BODY_NO1 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5004, -1),
-                        [PlcSignalForLoadingBox.BODY_NO2 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5005, -1),
-                        [PlcSignalForLoadingBox.BODY_NO3 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5006, -1),
-                        [PlcSignalForLoadingBox.BODY_NO4 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5007, -1),
+                        [PlcSignalForLoadingBox.BODY_NO1 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5008, -1),
+                        [PlcSignalForLoadingBox.BODY_NO2 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5010, -1),
+                        [PlcSignalForLoadingBox.BODY_NO3 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5012, -1),
+                        [PlcSignalForLoadingBox.BODY_NO4 | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5014, -1),
                     }
                 },
                 new MelsecMonitorDeviceInfo<PlcSignalForLoadingBox>("D", "5101", 4, PlcDataType.DWORD, PlcDataType.DWORD)
                 {
                     SignalDict = new ConcurrentDictionary<PlcSignalForLoadingBox, PlcDbInfo>()
                     {
-                        [PlcSignalForLoadingBox.SHIFT_X | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5101, -1),
-                        [PlcSignalForLoadingBox.SHIFT_Y | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5103, -1),
-                        [PlcSignalForLoadingBox.SHIFT_Z | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5105, -1),
-                        [PlcSignalForLoadingBox.SHIFT_RX | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5107, -1),
-                        [PlcSignalForLoadingBox.SHIFT_RY | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5109, -1),
-                        [PlcSignalForLoadingBox.SHIFT_RZ | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5111, -1),
+                        [PlcSignalForLoadingBox.SHIFT_X | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5116, -1),
+                        [PlcSignalForLoadingBox.SHIFT_Y | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5120, -1),
+                        [PlcSignalForLoadingBox.SHIFT_Z | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5124, -1),
+                        [PlcSignalForLoadingBox.SHIFT_RX | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5128, -1),
+                        [PlcSignalForLoadingBox.SHIFT_RY | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5132, -1),
+                        [PlcSignalForLoadingBox.SHIFT_RZ | PlcSignalForLoadingBox.VALUE] = new PlcDbInfo(5136, -1),
                     }
                 },
             };
@@ -267,9 +253,8 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
             {
                 _tcpChannel = new TcpChannel("192.168.100.11", 2004);
                 _lsPlc = new FEnetClient(_tcpChannel);
-                _tcpChannel.Read(1000);
 
-                //initPlcMapTest();
+                initPlcMapTest();
             }
             catch (Exception ex)
             {
@@ -355,22 +340,20 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
                 {
                     if (monitorInfo.DataParseType == PlcDataType.BIT)
                     {
-                        address = $"%{monitorInfo.DeviceName}X{(dbInfo.Pos) * 16 + dbInfo.Bit}";
+                        address = $"%{monitorInfo.DeviceName}X{(dbInfo.Pos) * 8 + dbInfo.Bit}";
                         dbInfo.IsOn = _lsPlc.Read(address).ToArray()[0].Value.BitValue;
-                        Console.WriteLine($"{dbInfo.Pos} BIT {(dbInfo.Pos) * 16} {dbInfo.Bit} {dbInfo.IsOn}");
+                        Console.WriteLine($"{dbInfo.Pos} BIT {(dbInfo.Pos) * 8} {dbInfo.Bit} {dbInfo.IsOn}");
                     }
                     else if (monitorInfo.DataParseType == PlcDataType.WORD || monitorInfo.DataParseType == PlcDataType.ASCII)
                     {
-                        address = $"%{monitorInfo.DeviceName}W{(dbInfo.Pos)}";
-                        dbInfo.Int32Value = _lsPlc.Read(address).ToArray()[0].Value.WordValue;
+                        var val = _lsPlc.Read(DeviceType.D, (uint)dbInfo.Pos, 2);
+                        dbInfo.Int32Value = val[DataType.Word, (uint)dbInfo.Pos / 2];
                         Console.WriteLine($"{dbInfo.Pos} WORD {(dbInfo.Pos)} {dbInfo.Int32Value}");
                     }
                     else if (monitorInfo.DataParseType == PlcDataType.DWORD)
-                    {
-                        address = $"%{monitorInfo.DeviceName}D{(dbInfo.Pos) * 0.5f}";
-                        var add = _lsPlc.Read(address);
-                        var value = _lsPlc.Read(address).ToArray()[0].Value;
-                        dbInfo.FloatValue = (float)value.DoubleFloatingPointValue;
+                    { 
+                        var val = _lsPlc.Read(DeviceType.D, (uint)dbInfo.Pos, 4);
+                        dbInfo.FloatValue = val[DataType.DoubleWord, (uint)dbInfo.Pos / 4];
                         Console.WriteLine($"{dbInfo.Pos} DWORD {(dbInfo.Pos) * 0.5f} {dbInfo.FloatValue}");
                     }
                 }
@@ -444,12 +427,16 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
                 + PlcMonitorInfos[2].SignalDict[PlcSignalForLoadingBox.CAR_SEQ2 | PlcSignalForLoadingBox.VALUE].GetText(PlcDataType.ASCII);
             //string carSeq = PlcMonitorInfos[1].SignalDict[PlcSignalForLoadingBox.CAR_SEQ | PlcSignalForLoadingBox.VALUE].GetText(PlcMonitorInfos[1].DataParseType);
             CarSeq = carSeq;
-
+            var strr = PlcMonitorInfos[5].SignalDict[PlcSignalForLoadingBox.BODY_NO1 | PlcSignalForLoadingBox.VALUE];
             string bodyNumber = PlcMonitorInfos[5].SignalDict[PlcSignalForLoadingBox.BODY_NO1 | PlcSignalForLoadingBox.VALUE].GetText(PlcDataType.ASCII)
                 + PlcMonitorInfos[5].SignalDict[PlcSignalForLoadingBox.BODY_NO2 | PlcSignalForLoadingBox.VALUE].GetText(PlcDataType.ASCII)
                 + PlcMonitorInfos[5].SignalDict[PlcSignalForLoadingBox.BODY_NO3 | PlcSignalForLoadingBox.VALUE].GetText(PlcDataType.ASCII)
                 + PlcMonitorInfos[5].SignalDict[PlcSignalForLoadingBox.BODY_NO4 | PlcSignalForLoadingBox.VALUE].GetText(PlcDataType.ASCII);
             //+ PlcMonitorInfos[5].SignalDict[PlcSignalForLoadingBox.BODY_NUM_5 | PlcSignalForLoadingBox.VALUE].GetText(PlcDataType.ASCII);
+            if(BodyNumber != bodyNumber)
+            {
+                Logger.Info($"BodyNumber: {bodyNumber.ToString()}");
+            }
             BodyNumber = bodyNumber;
 
             CarTypeUpdate?.Invoke(this, new VisionUpdateEventArgs(CarType, CarSeq, BodyNumber));
