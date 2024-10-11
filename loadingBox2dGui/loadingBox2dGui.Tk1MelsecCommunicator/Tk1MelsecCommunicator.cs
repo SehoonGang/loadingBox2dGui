@@ -355,23 +355,23 @@ namespace loadingBox2dGui.Tk1MelsecCommunicator
                 {
                     if (monitorInfo.DataParseType == PlcDataType.BIT)
                     {
-                        address = $"%{monitorInfo.DeviceName}X{(dbInfo.Pos - 5000) * 16 + dbInfo.Bit}";
+                        address = $"%{monitorInfo.DeviceName}X{(dbInfo.Pos) * 16 + dbInfo.Bit}";
                         dbInfo.IsOn = _lsPlc.Read(address).ToArray()[0].Value.BitValue;
-                        Console.WriteLine($"{dbInfo.Pos} BIT {(dbInfo.Pos - 5000) * 16} {dbInfo.Bit} {dbInfo.IsOn}");
+                        Console.WriteLine($"{dbInfo.Pos} BIT {(dbInfo.Pos) * 16} {dbInfo.Bit} {dbInfo.IsOn}");
                     }
                     else if (monitorInfo.DataParseType == PlcDataType.WORD || monitorInfo.DataParseType == PlcDataType.ASCII)
                     {
-                        address = $"%{monitorInfo.DeviceName}W{(dbInfo.Pos - 5000)}";
+                        address = $"%{monitorInfo.DeviceName}W{(dbInfo.Pos)}";
                         dbInfo.Int32Value = _lsPlc.Read(address).ToArray()[0].Value.WordValue;
-                        Console.WriteLine($"{dbInfo.Pos} WORD {(dbInfo.Pos - 5000)} {dbInfo.Int32Value}");
+                        Console.WriteLine($"{dbInfo.Pos} WORD {(dbInfo.Pos)} {dbInfo.Int32Value}");
                     }
                     else if (monitorInfo.DataParseType == PlcDataType.DWORD)
                     {
-                        address = $"%{monitorInfo.DeviceName}D{(dbInfo.Pos - 5000) * 0.5f}";
+                        address = $"%{monitorInfo.DeviceName}D{(dbInfo.Pos) * 0.5f}";
                         var add = _lsPlc.Read(address);
                         var value = _lsPlc.Read(address).ToArray()[0].Value;
                         dbInfo.FloatValue = (float)value.DoubleFloatingPointValue;
-                        Console.WriteLine($"{dbInfo.Pos} DWORD {(dbInfo.Pos - 5000) * 0.5f} {dbInfo.FloatValue}");
+                        Console.WriteLine($"{dbInfo.Pos} DWORD {(dbInfo.Pos) * 0.5f} {dbInfo.FloatValue}");
                     }
                 }
             }
